@@ -7,6 +7,7 @@
             <th>Name</th>
             <th>Cost</th>
             <th>Description</th>
+            <th>Media Property</th>
         </tr>
     </thead>
     <tbody>
@@ -16,6 +17,11 @@
             <th>{{this.name}}</th>
             <th>{{this.cost}}</th>
             <th>{{this.description}}</th>
+            <th>
+                {{this.mediaProperty.name}}
+                {{this.mediaProperty.description}}
+                {{this.mediaProperty.url}}
+            </th>
         </tr>
         {{/each}}
     </tbody>
