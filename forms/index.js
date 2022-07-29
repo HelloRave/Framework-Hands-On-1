@@ -24,7 +24,7 @@ var bootstrapField = function (name, object) {
     return '<div class="form-group">' + label + widget + error + '</div>';
 };
 
-const createProductForm = (mediaProperties) => {
+const createProductForm = (mediaProperties, tags) => {
     return forms.create({
         'name': fields.string({
             required: true,
@@ -44,6 +44,12 @@ const createProductForm = (mediaProperties) => {
             errorAfterField: true,
             widget: widgets.select(),
             choices: mediaProperties
+        }),
+        'tags': fields.string({
+            required: true,
+            errorAfterField: true,
+            widget: widgets.multipleSelect(),
+            choices: tags
         })
     })
 }

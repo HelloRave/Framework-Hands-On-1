@@ -4,6 +4,9 @@ const Product = bookshelf.model('Product', {
     tableName: 'products',
     mediaProperty: function(){
         return this.belongsTo('MediaProperty')
+    },
+    tags: function(){
+        return this.belongsToMany('Tag')
     }
 })
 
@@ -14,4 +17,11 @@ const MediaProperty = bookshelf.model('MediaProperty', {
     }
 })
 
-module.exports = {Product, MediaProperty}
+const Tag = bookshelf.model('Tag', {
+    tableName: 'tags',
+    products: function(){
+        return this.belongsToMany('Product')
+    }
+})
+
+module.exports = {Product, MediaProperty, Tag}
