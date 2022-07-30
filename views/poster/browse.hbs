@@ -9,25 +9,30 @@
             <th>Description</th>
             <th>Media Property</th>
             <th>Tags</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
         {{#each products}}
         <tr>
-            <th>{{this.id}}</th>
-            <th>{{this.name}}</th>
-            <th>{{this.cost}}</th>
-            <th>{{this.description}}</th>
-            <th>
+            <td>{{this.id}}</td>
+            <td>{{this.name}}</td>
+            <td>{{this.cost}}</td>
+            <td>{{this.description}}</td>
+            <td>
                 {{this.mediaProperty.name}}
                 {{this.mediaProperty.description}}
                 {{this.mediaProperty.url}}
-            </th>
-            <th>
+            </td>
+            <td>
                 {{#each this.tags}}
                 <span>{{this.name}}</span>   
                 {{/each}}
-            </th>
+            </td>
+            <td>
+                <a href="/posters/{{this.id}}/update" class="btn btn-primary btn-sm mx-2">Update</a>
+                <a href="/posters/{{this.id}}/Delete" class="btn btn-danger btn-sm">Delete</a>
+            </td>
         </tr>
         {{/each}}
     </tbody>
