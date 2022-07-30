@@ -54,4 +54,26 @@ const createProductForm = (mediaProperties, tags) => {
     })
 }
 
-module.exports = {createProductForm, bootstrapField}
+const createUserForm = () => {
+    return forms.create({
+        'username': fields.string({
+            required: true,
+            errorAfterField: true
+        }),
+        'email': fields.string({
+            required: true,
+            errorAfterField: true
+        }),
+        'password': fields.password({
+            required: true,
+            errorAfterField: true
+        }),
+        'confirm_password': fields.password({
+            required: true,
+            errorAfterField: true,
+            validators: [validators.matchField('password')]
+        })
+    })
+}
+
+module.exports = {createProductForm, bootstrapField, createUserForm}

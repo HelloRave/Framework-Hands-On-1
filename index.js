@@ -38,6 +38,7 @@ app.use(express.urlencoded({
 
 app.use('/', require('./routes/landing'))
 app.use('/posters', posterRoutes)
+app.use('/user', require('./routes/users'))
 
 app.listen(3000, function(){
     console.log('Server started')
