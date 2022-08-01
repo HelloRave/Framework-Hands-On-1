@@ -1,5 +1,6 @@
 const express = require('express')
 const { createProductForm, bootstrapField } = require('../forms')
+const { checkIfAuthenticated } = require('../middlewares/index')
 const router = express.Router()
 
 const {Product, MediaProperty, Tag} = require('../models')
@@ -13,7 +14,7 @@ router.get('/', async function(req, res){
     })
 })
 
-router.get('/create', async function(req, res){
+router.get('/create', checkIfAuthenticated, async function(req, res){
 
     const mediaProperties = await MediaProperty.fetchAll().map(mediaProperty => {
         return [mediaProperty.get('id'), mediaProperty.get('name')]
@@ -29,8 +30,17 @@ router.get('/create', async function(req, res){
     })
 })
 
-router.post('/create', async function(req, res){
-    const productForm = createProductForm();
+router.post('/create', checkIfAuthenticated, async function(req, res){
+    
+    const mediaProperties = await MediaProperty.fetchAll().map(mediaProperty => {
+        return [mediaProperty.get('id'), mediaProperty.get('name')]
+    })
+
+    const tags = await Tag.fetchAll().map(tag => {
+        return [tag.get('id'), tag.get('name')]
+    })
+    
+    const productForm = createProductForm(mediaProperties.slice(1), tags);
     productForm.handle(req, {
         'success': async function(form){
             let {tags, ...productData} = form.data

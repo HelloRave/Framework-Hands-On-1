@@ -2,6 +2,13 @@ const express = require('express')
 const { createUserForm, bootstrapField, createLoginForm } = require('../forms');
 const { User } = require('../models');
 const router = express.Router()
+const crypto = require('crypto')
+
+const getHashedPassword = (password) => {
+    const sha256 = crypto.createHash('sha256')
+    const hash = sha256.update(password).digest('base64')
+    return hash
+}
 
 router.get('/register', function (req, res) {
     const userForm = createUserForm();
@@ -14,9 +21,11 @@ router.post('/register', function (req, res) {
     const userForm = createUserForm();
     userForm.handle(req, {
         success: async function (form) {
-            const user = new User();
-            let { confirm_password, ...userData } = form.data
-            user.set(userData)
+            const user = new User({
+                'username': form.data.username,
+                'password': getHashedPassword(form.data.password),
+                'email': form.data.email
+            }); 
             await user.save()
             req.flash('success_messages', 'User signed up successfully')
             res.redirect('/user/login')
@@ -55,7 +64,7 @@ router.post('/login', function (req, res) {
                 req.flash('error_messages', 'Sorry, does not match')
                 res.redirect('/user/login')
             } else {
-                if (user.get('password') === form.data.password) {
+                if (user.get('password') === getHashedPassword(form.data.password)) {
                     req.session.user = {
                         id: user.get('id'),
                         email: user.get('email'),
