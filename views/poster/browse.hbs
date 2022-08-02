@@ -9,6 +9,7 @@
             <th>Description</th>
             <th>Media Property</th>
             <th>Tags</th>
+            <th>Image</th>
             <th></th>
         </tr>
     </thead>
@@ -28,6 +29,9 @@
                 {{#each this.tags}}
                 <span>{{this.name}}</span>   
                 {{/each}}
+            </td>
+            <td>
+                <img src="{{this.image_url}}" class="img-fluid">
             </td>
             <td>
                 <a href="/posters/{{this.id}}/update" class="btn btn-primary btn-sm mx-2">Update</a>

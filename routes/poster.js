@@ -90,13 +90,17 @@ router.get('/:product_id/update', async function(req, res){
     productForm.fields.cost.value = product.get('cost')
     productForm.fields.description.value = product.get('description')
     productForm.fields.media_property_id.value = product.get('media_property_id')
+    productForm.fields.image_url.value = product.get('image_url')
 
     let selectedTags = await product.related('tags').pluck('id')
     productForm.fields.tags.value = selectedTags
 
     res.render('poster/update', {
         form: productForm.toHTML(bootstrapField),
-        product: product.toJSON()
+        product: product.toJSON(),
+        cloudinaryName: process.env.CLOUDINARY_NAME,
+        cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+        cloudinaryPreset: process.env.CLOUDINARY_PRESET
     })
 })
 
