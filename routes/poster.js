@@ -1,11 +1,24 @@
 const express = require('express')
-const { createProductForm, bootstrapField } = require('../forms')
+const { createProductForm, bootstrapField, createSearchForm } = require('../forms')
 const { checkIfAuthenticated } = require('../middlewares/index')
 const router = express.Router()
 
 const {Product, MediaProperty, Tag} = require('../models')
 
 router.get('/', async function(req, res){
+
+    const mediaProperties = await MediaProperty.fetchAll().map(mediaProperty => {
+        return [mediaProperty.get('id'), mediaProperty.get('name')]
+    })
+
+    mediaProperties.unshift([0, '-------'])
+
+    const tags = await Tag.fetchAll().map(tag => {
+        return [tag.get('id'), tag.get('name')]
+    })
+
+    let searchForm = createSearchForm(mediaProperties, tags)
+
     let products = await Product.collection().fetch({
         withRelated: ['mediaProperty', 'tags']
     })
