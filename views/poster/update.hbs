@@ -1,6 +1,7 @@
 {{#extends 'base'}}
 {{#block 'content'}}
 <form method="POST">
+    <input type="hidden" name="_csrf" value="{{csrfToken}}">
     <h1>Updating {{product.name}}</h1>
     {{{form}}}
     <input type="submit" class="btn btn-primary btn-sm">

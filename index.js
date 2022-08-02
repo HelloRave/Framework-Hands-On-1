@@ -44,10 +44,12 @@ app.use(function(req, res, next){
 })
 
 const posterRoutes = require('./routes/poster')
+const cloudinaryRoutes = require('./routes/cloudinary')
 
 app.use('/', require('./routes/landing'))
 app.use('/posters', posterRoutes)
 app.use('/user', require('./routes/users'))
+app.use('/cloudinary', cloudinaryRoutes)
 
 app.listen(3000, function(){
     console.log('Server started')

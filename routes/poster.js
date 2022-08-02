@@ -26,7 +26,10 @@ router.get('/create', checkIfAuthenticated, async function(req, res){
 
     const productForm = createProductForm(mediaProperties.slice(1), tags);
     res.render('poster/create', {
-        form: productForm.toHTML(bootstrapField)
+        form: productForm.toHTML(bootstrapField),
+        cloudinaryName: process.env.CLOUDINARY_NAME,
+        cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+        cloudinaryPreset: process.env.CLOUDINARY_PRESET
     })
 })
 
