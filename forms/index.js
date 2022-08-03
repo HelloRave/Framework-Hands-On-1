@@ -92,7 +92,7 @@ const createLoginForm = () => {
     })
 }
 
-const createSearchForm = (categories, tags) => {
+const createSearchForm = (mediaProperties, tags) => {
     return forms.create({
         name: fields.string({
             required: false,
@@ -108,12 +108,12 @@ const createSearchForm = (categories, tags) => {
             errorAfterField: true,
             validators: [validators.integer()]
         }),
-        category_id: fields.string({
-            label: 'Category',
+        media_property_id: fields.string({
+            label: 'Media Property',
             required: false,
             errorAfterField: true,
             widget: widgets.select(),
-            choices: categories
+            choices: mediaProperties
         }),
         tags: fields.string({
             required: false,

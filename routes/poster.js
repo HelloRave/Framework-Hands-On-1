@@ -18,13 +18,59 @@ router.get('/', async function(req, res){
     })
 
     let searchForm = createSearchForm(mediaProperties, tags)
+    let query = Product.collection()
+    searchForm.handle(req, {
+        empty: async function(form){
+            let products = await query.fetch({
+                withRelated: ['mediaProperty', 'tags']               
+            })
+            res.render('poster/browse',{
+                products: products.toJSON(),
+                form: form.toHTML(bootstrapField)
+            })
+        },
+        error: async function(form){
+            let products = await query.fetch({
+                withRelated: ['mediaProperty', 'tags']               
+            })
+            res.render('poster/browse',{
+                products: products.toJSON(),
+                form: form.toHTML(bootstrapField)
+            })
+        },
+        success: async function(form){
 
-    let products = await Product.collection().fetch({
-        withRelated: ['mediaProperty', 'tags']
+            if (form.data.name){
+                query.where('name', 'like', `%${form.data.name}%`)
+            }
+
+            if (form.data.media_property_id && form.data.media_property_id != '0') {
+                query.where('media_property_id', '=', form.data.media_property_id)
+            }
+
+            if (form.data.min_cost) {
+                query.where('cost', '>=', form.data.min_cost)
+            }
+
+            if (form.data.max_cost) {
+                query.where('cost', '<=', form.data.max_cost)
+            }
+
+            if (form.data.tags){
+                query.query('join', 'products_tags', 'products.id', 'product_id')
+                .where('tag_id', 'in', form.data.tags.split(','))
+            }
+
+            let products = await query.fetch({
+                withRelated: ['mediaProperty', 'tags']               
+            })
+            res.render('poster/browse', {
+                products: products.toJSON(),
+                form: searchForm.toHTML(bootstrapField)
+            })
+        }
     })
-    res.render('poster/browse', {
-        products: products.toJSON()
-    })
+    
 })
 
 router.get('/create', checkIfAuthenticated, async function(req, res){
